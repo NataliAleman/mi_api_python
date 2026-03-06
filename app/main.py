@@ -1,23 +1,75 @@
-import tkinter as tk
-from tkinter import messagebox
+from flask import Flask, request, jsonify
+import mysql.connector
 
-def configurar():
-    tarjeta = entry.get()
-    if tarjeta:
-        messagebox.showinfo("RFID", f"Tarjeta leída:\n{tarjeta}")
-    else:
-        messagebox.showwarning("Aviso", "Pase una tarjeta primero")
+app = Flask(__name__)
 
-root = tk.Tk()
-root.title("Sistema RFID")
-root.geometry("350x200")
+# CONEXION A MYSQL
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="rfid"
+)
 
-tk.Label(root, text="ID Tarjeta:").pack(pady=10)
+# -----------------------------
+# RECIBIR UID DEL ESP32
+# -----------------------------
+@app.route("/api/rfid", methods=["POST"])
+def recibir_rfid():
 
-entry = tk.Entry(root, width=30)
-entry.pack()
-entry.focus()
+    data = request.get_json()
+    # imprimir datos para depuración en consola
+    app.logger.debug(f"Datos recibidos: {data}")
 
-tk.Button(root, text="Configurar", command=configurar).pack(pady=20)
+    if not data or "uid" not in data:
+        return jsonify({"error": "UID no recibido"}), 400
 
-root.mainloop()
+    uid = data["uid"]
+
+    cursor = db.cursor()
+
+    sql = "INSERT INTO registros (uid) VALUES (%s)"
+    val = (uid,)
+
+    cursor.execute(sql, val)
+    db.commit()
+
+    cursor.close()
+
+    return jsonify({
+        "status": "ok",
+        "uid": uid
+    })
+
+
+# -----------------------------
+# VER REGISTROS
+# -----------------------------
+@app.route("/api/registros", methods=["GET"])
+def ver_registros():
+
+    cursor = db.cursor()
+
+    cursor.execute("SELECT id, uid, fecha FROM registros ORDER BY id DESC")
+
+    datos = cursor.fetchall()
+
+    lista = []
+
+    for row in datos:
+        lista.append({
+            "id": row[0],
+            "uid": row[1],
+            "fecha": str(row[2])
+        })
+
+    cursor.close()
+
+    return jsonify(lista)
+
+
+# -----------------------------
+# INICIAR SERVIDOR
+# -----------------------------
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=False)

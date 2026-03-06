@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Panel RFID</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+}
+
+h1{
+margin-top:40px;
+}
+
+table{
+margin:auto;
+margin-top:30px;
+border-collapse:collapse;
+width:60%;
+background:white;
+color:black;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ccc;
+}
+
+th{
+background:#2563eb;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Panel de Lectura RFID</h1>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>UID</th>
+<th>Fecha</th>
+</tr>
+</thead>
+
+<tbody id="tabla">
+</tbody>
+
+</table>
+
+<script>
+
+function cargar(){
+
+fetch("/api/registros")
+.then(r=>r.json())
+.then(data=>{
+
+let tabla = document.getElementById("tabla")
+
+tabla.innerHTML=""
+
+data.forEach(r=>{
+
+tabla.innerHTML+=`
+<tr>
+<td>${r.id}</td>
+<td>${r.uid}</td>
+<td>${r.fecha}</td>
+</tr>
+`
+
+})
+
+})
+
+}
+
+setInterval(cargar,1000)
+
+cargar()
+
+</script>
+
+</body>
+</html>
