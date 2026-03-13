@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alta de Tarjeta</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div class="container">
+    <h2>Dar de alta tarjeta RFID</h2>
+
+    <form method="post" class="config-form">
+
+        <label for="uid">UID</label>
+        <input 
+            type="text"
+            name="uid"
+            id="uid"
+            required
+            placeholder="UID de la tarjeta"
+        >
+
+        <button type="button" id="btn-scan-alta" class="btn-dropdown" style="margin-top:10px;">
+            📡 Leer tarjeta
+        </button>
+
+        <div id="status-msg" style="margin-top:10px;color:green;font-weight:bold;"></div>
+<!-- 
+        <label for="owner">Propietario (opcional)</label>
+        <input 
+            type="text"
+            name="owner"
+            id="owner"
+            placeholder="Nombre del dueño"
+        >
+
+        <label for="access">Accesos permitidos (opcional)</label>
+        <input 
+            type="text"
+            name="access"
+            id="access"
+            placeholder="Ej: puerta1, puerta2"
+        >
+
+        <label for="registered">Hora de registro (opcional)</label>
+        <input 
+            type="datetime-local"
+            name="registered"
+            id="registered"
+        > -->
+
+        <button type="submit" class="btn-dropdown" style="margin-top:20px;">
+            Agregar tarjeta
+        </button>
+
+    </form>
+</div>
+
+
+<script>
+
+let ultimoUID = null;
+
+// función que consulta el backend
+async function leerTarjeta() {
+
+    try {
+
+        const response = await fetch('/api/last-uid');
+        const data = await response.json();
+
+        if (data.uid && data.uid !== ultimoUID) {
+
+            ultimoUID = data.uid;
+
+            document.getElementById("uid").value = data.uid;
+
+            mostrarMensaje("Tarjeta detectada: " + data.uid);
+
+        }
+
+    } catch (error) {
+
+        console.error("Error leyendo tarjeta:", error);
+
+    }
+
+}
+
+// mostrar mensaje visual
+function mostrarMensaje(msg) {
+
+    const status = document.getElementById("status-msg");
+
+    status.innerText = msg;
+
+    setTimeout(() => {
+        status.innerText = "";
+    }, 4000);
+
+}
+
+
+// botón para forzar lectura
+document.getElementById("btn-scan-alta").addEventListener("click", leerTarjeta);
+
+
+// revisar cada 500 ms si se leyó una tarjeta nueva
+setInterval(leerTarjeta, 500);
+
+</script>
+
+</body>
+</html>

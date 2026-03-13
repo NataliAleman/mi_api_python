@@ -6,29 +6,46 @@
 </head>
 <body>
 
-<h2>Tarjetas Detectadas</h2>
+<div class="container">
+    <h2>Tarjetas Detectadas</h2>
 
-<table id="tabla">
-    <thead>
+    <button id="btn-scan" class="btn-dropdown" style="margin-bottom:20px;">📡 Leer tarjeta</button>
+    <div id="last-uid" class="last-uid"></div>
+
+    <div class="search-group" style="margin:20px 0; text-align:center;">
+        <input type="text" id="search-input" placeholder="Buscar UID o propietario" style="padding:8px; width:60%; max-width:400px;" autofocus required/>
+    </div>
+
+    <div id="cards-container" class="cards-container"></div>
+
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>UID</th>
+                <th>Propietario</th>
+                <th>Accesos</th>
+                <th>Registrado</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for t in tarjetas %}
         <tr>
-            <th>ID</th>
-            <th>UID</th>
-            <th>Fecha</th>
+            <td>{{t.id}}</td>
+            <td>{{t.uid}}</td>
+            <td>{{t.owner or ''}}</td>
+            <td>{{t.access or ''}}</td>
+            <td>{{t.registered_at or ''}}</td>
+            <td>{{t.fecha}}</td>
         </tr>
-    </thead>
+        {% endfor %}
 
-    <tbody>
-
-    {% for t in tarjetas %}
-    <tr>
-        <td>{{t.id}}</td>
-        <td>{{t.uid}}</td>
-        <td>{{t.fecha}}</td>
-    </tr>
-    {% endfor %}
-
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 
 <script src="/static/main.js"></script>
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configurar Tarjeta</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Configurar tarjeta</h2>
+
+    {% if cards %}
+    <form method="post" class="config-form">
+        <label for="card_id">Seleccionar tarjeta</label>
+        <select name="card_id" id="card_id" required>
+            {% for c in cards %}
+                <option value="{{c.id}}">{{c.uid}} (ID {{c.id}})</option>
+            {% endfor %}
+        </select>
+
+        <label for="owner">Propietario</label>
+        <input type="text" name="owner" id="owner" placeholder="Nombre del dueño">
+
+        <label for="access">Accesos permitidos</label>
+        <input type="text" name="access" id="access" placeholder="E.g. puerta1, puerta2">
+
+        <label for="registered">Hora de registro</label>
+        <input type="datetime-local" name="registered" id="registered">
+
+        <button type="submit" class="btn-dropdown" style="margin-top:20px;">Guardar</button>
+    </form>
+    {% else %}
+    <p>No hay tarjetas para configurar. Primero lee una tarjeta.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

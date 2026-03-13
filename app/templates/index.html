@@ -94,4 +94,18 @@ cargar()
 </script>
 
 </body>
-</html>
+</html>.btn-dropdown:hover {
+    /* sin movimiento, sólo cambio de color y sombra */
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.btn-dropdown:active {
+    /* sin desplazamiento en activo */
+    transform: none;
+}
+
+/* la flecha gira igual, sin animaciones extra */
+.dropdown:hover .btn-dropdown .arrow {
+    transform: rotate(180deg);
+}

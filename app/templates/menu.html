@@ -1,14 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Menu</title>
+    <title>Sistema de ciberseguridad</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-<h1>Sistema RFID</h1>
+    <div class="container">
+        <div class="header">
+            <h1>Sistema de ciberseguridad</h1>
+            <p class="subtitle">Control de acceso y seguridad</p>
+        </div>
 
-<a href="/rfid">Ver tarjetas</a>
+        <nav class="navbar">
+            <div class="dropdown">
+                <button class="btn-dropdown">
+                    <span class="icon">📋</span> Tarjetas RDIF
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-content">
+                    <a href="/rfid" class="dropdown-item">
+                        <span class="item-icon">🔍</span> Leer Tarjeta
+                    </a>
+                    <a href="/configurar-tarjeta" class="dropdown-item">
+                        <span class="item-icon">⚙️</span> Configurar Tarjeta
+                    </a>
+                    <a href="/alta-tarjeta" class="dropdown-item">
+                        <span class="item-icon">➕</span> Alta Tarjeta
+                    </a>
+                </div>
+            </div>
+            <!-- <div class="dropdown">
+                <button class="btn-dropdown">
+                    <span class="icon">📋</span> Tarjetas RDIF
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="dropdown-content">
+                    <a href="/rfid" class="dropdown-item">
+                        <span class="item-icon">🔍</span> Leer Tarjeta
+                    </a>
+                    <a href="/configurar-tarjeta" class="dropdown-item">
+                        <span class="item-icon">⚙️</span> Configurar Tarjeta
+                    </a>
+                    <a href="/alta-tarjeta" class="dropdown-item">
+                        <span class="item-icon">➕</span> Alta Tarjeta
+                    </a>
+                </div>
+            </div> -->
+        </nav>
+    </div>
 
 </body>
+
 </html>
